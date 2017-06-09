@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">科技新闻</string>
+
+    <!--main-->
+    <string name="action_change_theme">换肤</string>
+    <string name="action_setting">设置</string>
+    <string name="about">关于</string>
+    <string name="action_up">回到顶部</string>
+
+</resources>

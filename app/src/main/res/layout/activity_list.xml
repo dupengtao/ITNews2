@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_article"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:requiresFadingEdge="none"
+                android:paddingTop="50dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:scrollbarSize="2dp"
+                android:scrollbarThumbVertical="@color/scrollbar"
+                android:scrollbarStyle="outsideOverlay"
+                />
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_list"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#244AD0"
+            android:theme="@style/ToolbarColoredBackArrow"
+            />
+</FrameLayout>
