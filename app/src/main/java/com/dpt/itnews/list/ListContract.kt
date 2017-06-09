@@ -10,6 +10,8 @@ import com.dpt.itnews.data.vo.News
 interface ListContract {
     interface View : BaseView<Presenter> {
         fun showNews(news: News)
+        fun showTopTips(msg: String)
+        fun showRefreshing(isShow: Boolean)
     }
 
     interface Presenter : BasePresenter {
@@ -17,5 +19,7 @@ interface ListContract {
         fun loadRecentList(isFirst: Boolean = true)
 
         fun jumpArticle(position: Int)
+
+        fun loadNextPage(firstVisibleItemPosition: Int, lastVisibleItemPosition: Int, itemCount: Int)
     }
 }

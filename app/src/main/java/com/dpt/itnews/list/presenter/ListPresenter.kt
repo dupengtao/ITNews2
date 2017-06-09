@@ -10,6 +10,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import java.lang.StringBuilder
 
 /**
@@ -34,26 +36,62 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
 
     override fun loadRecentList(isFirst: Boolean) {
 
-        isFirst.let {
-            val subscribe = loadNews()
+        if (isFirst) {
+            val subscribe = loadNews(size = 50)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doFinally {
                         Log.e(ListPresenter::class.java.simpleName, "do Finally")
                     }
                     .subscribe {
                         news: News ->
-                        Log.e(ListPresenter::class.java.simpleName, news.toString())
+                        Log.e(ListPresenter::class.java.simpleName, "news list size = ${news.newsList.size}")
                         curNews = news
                         view.showNews(news)
+                        view.showTopTips("首页已更新")
                     }
             disposable.addAll(subscribe)
+        } else {
+            val subscribe = loadNews()
+                    .toObservable()
+                    .concatMap {
+                        Observable.fromIterable(it.newsList)
+                    }
+                    .filter {
+                        val topId = curNews.newsList.first().id - 10
+                        it.id > topId
+                    }
+                    .toList()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnEvent {
+                        increasedItems, _ ->
+                        Log.e(ListPresenter::class.java.simpleName, "show top tips ${increasedItems.size}")
+                        view.showTopTips("${increasedItems.size}条新内容")
+                    }
+                    .observeOn(Schedulers.io())
+                    .zipWith(Single.just(curNews), BiFunction<List<NewsItemBody>, News, News> {
+                        increasedItems, curNews ->
+                        if (increasedItems.isEmpty()) curNews
+                        curNews.newsList.addAll(0, increasedItems)
+                        curNews
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally {
+                        view.showRefreshing(false)
+                    }
+                    .subscribe({
+                        view.showNews(it)
+                    }, {
+                        it.printStackTrace()
+                    })
+            disposable.add(subscribe)
         }
+
 
     }
 
     override fun jumpArticle(position: Int) {
-        with(curNews.newsList[position]){
-            Log.e(ListPresenter::class.java.simpleName,"click item pos = $position article name = $title")
+        with(curNews.newsList[position]) {
+            Log.e(ListPresenter::class.java.simpleName, "click item pos = $position article name = $title")
         }
     }
 
@@ -90,8 +128,8 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
         return NewsItemBody(newsEntry.id, newsEntry.title, summary, published, iconUrl, newsEntry.sourceName, publishedData, publishedTime, newsEntry.views)
     }
 
-    private fun loadNews(index: Int = 1): Single<News> {
-        return newsRepository.getNewsList(index)
+    private fun loadNews(index: Int = 1, size: Int = 30): Single<News> {
+        return newsRepository.getNewsList(index, size)
                 .concatMap { t -> Observable.fromIterable(t.newsEntryList) }
                 .map {
                     newsEntry: NewsEntry ->
@@ -103,8 +141,9 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                     n.newsList.addAll(t)
                     n
                 }
-
-
     }
 
+    override fun loadNextPage(firstVisibleItemPosition: Int, lastVisibleItemPosition: Int, itemCount: Int) {
+
+    }
 }
