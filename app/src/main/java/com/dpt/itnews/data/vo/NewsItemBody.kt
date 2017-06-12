@@ -24,7 +24,7 @@ data class NewsItemBody(val id: Int, val title: String?, val summary: String?, v
         return id
     }
 
-    fun formateDate():String{
+    fun formatDate():String{
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val date = format.parse("$publishedDate $publishedTime")
         return RelativeDateFormat.format(date)

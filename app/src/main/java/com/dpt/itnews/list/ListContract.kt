@@ -20,6 +20,6 @@ interface ListContract {
 
         fun jumpArticle(position: Int)
 
-        fun loadNextPage(firstVisibleItemPosition: Int, lastVisibleItemPosition: Int, itemCount: Int)
+        fun loadNextPage(fistPos: Int, lastPos: Int, itemCount: Int)
     }
 }

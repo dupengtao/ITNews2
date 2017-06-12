@@ -1,7 +1,6 @@
 package com.dpt.itnews.list.ui.adapter
 
 import android.content.Context
-import android.support.v7.widget.DecorContentParent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +31,7 @@ class NewsEntryAdapter(private val context: Context, private val layoutHelper: L
         with(news.newsList[position]) {
             holder.tvTitle.text = title
             holder.tvSummary.text = summary
-            holder.tvDate.text = "$id • $sourceName • $view 人阅读 • ${formateDate()}"
+            holder.tvDate.text = "$id • $sourceName • $view 人阅读 • ${formatDate()}"
         }
     }
 
