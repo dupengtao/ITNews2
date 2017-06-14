@@ -12,6 +12,7 @@ interface ListContract {
         fun showNews(news: News)
         fun showTopTips(msg: String)
         fun showRefreshing(isShow: Boolean)
+        fun openArticle(newId : Int)
     }
 
     interface Presenter : BasePresenter {

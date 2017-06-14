@@ -3,6 +3,7 @@ package com.dpt.itnews.base.util
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.support.v7.widget.Toolbar
+import android.text.Html
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 
@@ -31,3 +32,5 @@ fun Toolbar.anim(translationY: Float,isShow: Boolean = true, startAction: () -> 
             })
             .start()
 }
+
+fun String?.fromHtml() = if(this == null) this else Html.fromHtml(this).toString()

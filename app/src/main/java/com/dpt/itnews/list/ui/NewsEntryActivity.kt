@@ -12,7 +12,9 @@ import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.dpt.itnews.R
+import com.dpt.itnews.article.ui.ArticleView
 import com.dpt.itnews.base.util.anim
+import com.dpt.itnews.base.widget.CustomBottomSheetBehavior
 import com.dpt.itnews.data.vo.News
 import com.dpt.itnews.list.ListContract
 import com.dpt.itnews.list.presenter.ListPresenter
@@ -29,6 +31,8 @@ class NewsEntryActivity : Activity(), ListContract.View {
     private lateinit var presenter: ListContract.Presenter
     private lateinit var newsEntryAdapter: NewsEntryAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var articleView: ArticleView
+    private lateinit var articleBehavior: CustomBottomSheetBehavior<ArticleView>
 
     private var preOffset = 0
 
@@ -40,7 +44,14 @@ class NewsEntryActivity : Activity(), ListContract.View {
         initRecyclerView()
         initSwipeRefresh()
 
+        initArticleView()
+
         ListPresenter(this)
+    }
+    private fun initArticleView() {
+        articleView = findViewById(R.id.rl_article_root) as ArticleView
+        articleBehavior = CustomBottomSheetBehavior.from(articleView)
+        articleView.setBottomSheetBehavior(articleBehavior)
     }
 
     override fun onResume() {
@@ -126,6 +137,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
         toolBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_up -> {
+                    recyclerView.smoothScrollToPosition(0)
                 }
             }
             true
@@ -146,5 +158,18 @@ class NewsEntryActivity : Activity(), ListContract.View {
 
     override fun showRefreshing(isShow: Boolean) {
         swipeRefreshLayout.isRefreshing = isShow
+    }
+
+    override fun openArticle(newId: Int) {
+        articleView.loadNews(newId)
+        articleBehavior.state = CustomBottomSheetBehavior.STATE_EXPANDED
+    }
+
+    override fun onBackPressed() {
+        if (articleBehavior.state != CustomBottomSheetBehavior.STATE_COLLAPSED){
+            articleBehavior.state = CustomBottomSheetBehavior.STATE_COLLAPSED
+            return
+        }
+        super.onBackPressed()
     }
 }

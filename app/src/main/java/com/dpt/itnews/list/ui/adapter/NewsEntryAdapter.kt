@@ -2,6 +2,7 @@ package com.dpt.itnews.list.ui.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dpt.itnews.R
+import com.dpt.itnews.base.util.fromHtml
 import com.dpt.itnews.data.vo.News
 
 /**
@@ -29,9 +33,14 @@ class NewsEntryAdapter(private val context: Context, private val layoutHelper: L
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         with(news.newsList[position]) {
-            holder.tvTitle.text = title
-            holder.tvSummary.text = summary
+            holder.tvTitle.text = title.fromHtml()
+            holder.tvSummary.text = summary.fromHtml()
             holder.tvDate.text = "$id • $sourceName • $view 人阅读 • ${formatDate()}"
+            Glide.with(holder.ivIcon.context)
+                    .load(topicIcon)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .dontAnimate()
+                    .into(holder.ivIcon)
         }
     }
 
@@ -47,8 +56,6 @@ class NewsEntryAdapter(private val context: Context, private val layoutHelper: L
         init {
             itemView.setOnClickListener { itemClick.invoke(adapterPosition) }
         }
-
-
 
     }
 }

@@ -103,9 +103,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     }
 
     override fun jumpArticle(position: Int) {
-        with(curNews.newsList[position]) {
-            Log.e(ListPresenter::class.java.simpleName, "click item pos = $position article name = $title")
-        }
+        view.openArticle(curNews.newsList[position].id)
     }
 
     private fun transformNewsEntry(newsEntry: NewsEntry): NewsItemBody {
