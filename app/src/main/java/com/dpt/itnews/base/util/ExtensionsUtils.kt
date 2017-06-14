@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.support.v7.widget.Toolbar
 import android.text.Html
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 
@@ -12,7 +13,7 @@ import android.view.animation.DecelerateInterpolator
  * Created by dupengtao on 17/6/9.
  */
 
-fun Toolbar.anim(translationY: Float,isShow: Boolean = true, startAction: () -> Unit, endAction: () -> Unit) {
+fun View.scrollAnim(translationY: Float, isShow: Boolean = true, startAction: () -> Unit, endAction: () -> Unit) {
 
 
 

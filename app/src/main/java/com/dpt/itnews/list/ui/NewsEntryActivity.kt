@@ -1,11 +1,12 @@
 package com.dpt.itnews.list.ui
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.WindowManager
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import com.alibaba.android.vlayout.DelegateAdapter
@@ -13,7 +14,7 @@ import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.dpt.itnews.R
 import com.dpt.itnews.article.ui.ArticleView
-import com.dpt.itnews.base.util.anim
+import com.dpt.itnews.base.util.scrollAnim
 import com.dpt.itnews.base.widget.CustomBottomSheetBehavior
 import com.dpt.itnews.data.vo.News
 import com.dpt.itnews.list.ListContract
@@ -27,6 +28,7 @@ import java.util.*
 class NewsEntryActivity : Activity(), ListContract.View {
 
     private lateinit var toolBar: Toolbar
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var presenter: ListContract.Presenter
     private lateinit var newsEntryAdapter: NewsEntryAdapter
@@ -39,11 +41,12 @@ class NewsEntryActivity : Activity(), ListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list2)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
         initToolBar()
         initRecyclerView()
         initSwipeRefresh()
-
         initArticleView()
 
         ListPresenter(this)
@@ -113,13 +116,13 @@ class NewsEntryActivity : Activity(), ListContract.View {
                 return
             }
 
-            toolBar.anim(-toolBar.bottom.toFloat(), true, { toolBarHideRunning = true }, { toolBarHideRunning = false })
+            appBarLayout.scrollAnim(-toolBar.bottom.toFloat(), true, { toolBarHideRunning = true }, { toolBarHideRunning = false })
 
         } else {
             if (toolBarShowRunning) {
                 return
             }
-            toolBar.anim(0f, false, { toolBarShowRunning = true }, { toolBarShowRunning = false })
+            appBarLayout.scrollAnim(0f, false, { toolBarShowRunning = true }, { toolBarShowRunning = false })
         }
 
         preOffset = offsetToStart
@@ -130,9 +133,9 @@ class NewsEntryActivity : Activity(), ListContract.View {
     }
 
     private fun initToolBar() {
+        appBarLayout = findViewById(R.id.abl_list) as AppBarLayout
         toolBar = findViewById(R.id.tb_list) as Toolbar
         toolBar.title = getString(R.string.app_name)
-        toolBar.setTitleTextColor(Color.WHITE)
         toolBar.inflateMenu(R.menu.main)
         toolBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {

@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/rl_article_root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/rl_article_root"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@android:color/white"
         >
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_article"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="50dp"
             android:clipToPadding="false"
             android:paddingBottom="50dp"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:requiresFadingEdge="none"
             android:scrollbars="vertical"
+            android:overScrollMode="never"
             />
-</RelativeLayout>
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            android:background="@android:color/white"
+            >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:navigationIcon="@drawable/ic_article_cancel"
+                />
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#D5D5D5"
+                />
+    </android.support.design.widget.AppBarLayout>
+</FrameLayout>

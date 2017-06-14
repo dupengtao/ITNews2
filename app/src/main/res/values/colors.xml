@@ -7,4 +7,6 @@
     <color name="scrollbar">#48000000</color>
 
     <color name="black_p50">#7f000000</color>
+
+    <color name="barColor">#262626</color>
 </resources>
