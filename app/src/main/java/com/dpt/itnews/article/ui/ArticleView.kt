@@ -23,7 +23,7 @@ import java.util.*
 /**
  * Created by dupengtao on 17/6/13.
  */
-class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) ,ArticleContract.View {
+class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs), ArticleContract.View {
 
     private var titleAdapter: TitleAdapter
     private var contentAdapter: ContentAdapter
@@ -67,8 +67,12 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         presenter.subscribe()
     }
 
-    fun loadNews(id :Int){
-        presenter.loadArticle(id)
+    fun loadNews(id: Int, article: Article?) {
+        if (article != null) {
+            show(article)
+        } else {
+            presenter.loadArticle(id)
+        }
     }
 
     override fun show(article: Article) {
@@ -78,8 +82,8 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         contentAdapter.notifyDataSetChanged()
     }
 
-    fun setBottomSheetBehavior(bottomSheetBehavior : CustomBottomSheetBehavior<ArticleView>) {
-        bottomSheetBehavior.setBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback(){
+    fun setBottomSheetBehavior(bottomSheetBehavior: CustomBottomSheetBehavior<ArticleView>) {
+        bottomSheetBehavior.setBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SwitchIntDef")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {

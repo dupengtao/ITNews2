@@ -13,7 +13,9 @@ import com.alibaba.android.vlayout.LayoutHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dpt.itnews.R
+import com.dpt.itnews.R.id.iv
 import com.dpt.itnews.base.util.fromHtml
+import com.dpt.itnews.data.vo.Article
 import com.dpt.itnews.data.vo.News
 
 /**
@@ -33,6 +35,30 @@ class NewsEntryAdapter(private val context: Context, private val layoutHelper: L
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         with(news.newsList[position]) {
+
+
+            if (article != null) {
+                val url = (article as Article).getFirstImgUrl()
+                if (url.isNullOrEmpty()) {
+                    holder.ivTitle.visibility = View.GONE
+                } else {
+                    holder.ivTitle.visibility = View.VISIBLE
+                    if (url != null && url.endsWith(".gif")) {
+                        Glide.with(holder.ivTitle.context)
+                                .load(url)
+                                .asGif()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .dontAnimate()
+                                .into(holder.ivTitle)
+                    } else {
+                        Glide.with(holder.ivTitle.context)
+                                .load(url)
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(holder.ivTitle)
+                    }
+                }
+            }
+
             holder.tvTitle.text = title.fromHtml()
             holder.tvSummary.text = summary.fromHtml()
             holder.tvDate.text = "$id • $sourceName • $view 人阅读 • ${formatDate()}"
@@ -52,6 +78,7 @@ class NewsEntryAdapter(private val context: Context, private val layoutHelper: L
         val tvSummary = itemView.findViewById(R.id.tv_summary) as TextView
         val ivIcon = itemView.findViewById(R.id.iv) as ImageView
         val tvDate = itemView.findViewById(R.id.tv_date) as TextView
+        val ivTitle = itemView.findViewById(R.id.iv_title) as ImageView
 
         init {
             itemView.setOnClickListener { itemClick.invoke(adapterPosition) }

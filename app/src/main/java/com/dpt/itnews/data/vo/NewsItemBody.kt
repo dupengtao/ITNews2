@@ -1,6 +1,7 @@
 package com.dpt.itnews.data.vo
 
 import android.icu.text.RelativeDateTimeFormatter
+import com.dpt.itnews.data.po.NewsItem
 import com.dpt.news.base.ui.util.RelativeDateFormat
 import java.text.SimpleDateFormat
 
@@ -8,6 +9,8 @@ import java.text.SimpleDateFormat
  * Created by dupengtao on 17/6/8.
  */
 data class NewsItemBody(val id: Int, val title: String?, val summary: String?, val published: String?, val topicIcon: String?, val sourceName: String?, val publishedDate: String?, val publishedTime: String?, val view: String?) {
+
+    var article : Article? = null
 
     override fun equals(other: Any?): Boolean {
 

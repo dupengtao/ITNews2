@@ -29,7 +29,7 @@ class CnBlogNewsClient {
     private fun initCnBlogNewsApi() {
         val okHttpClientBuilder = OkHttpClient.Builder()
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
 
         val retrofit = Retrofit.Builder()

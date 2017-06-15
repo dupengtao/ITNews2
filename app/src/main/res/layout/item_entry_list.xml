@@ -7,6 +7,13 @@
         android:orientation="vertical"
         >
 
+    <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/iv_title"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:visibility="gone"
+            />
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,7 +23,6 @@
 
         <TextView
                 android:id="@+id/tv_title"
-                android:text="TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"

@@ -16,6 +16,7 @@ import com.dpt.itnews.R
 import com.dpt.itnews.article.ui.ArticleView
 import com.dpt.itnews.base.util.scrollAnim
 import com.dpt.itnews.base.widget.CustomBottomSheetBehavior
+import com.dpt.itnews.data.vo.Article
 import com.dpt.itnews.data.vo.News
 import com.dpt.itnews.list.ListContract
 import com.dpt.itnews.list.presenter.ListPresenter
@@ -37,6 +38,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
     private lateinit var articleBehavior: CustomBottomSheetBehavior<ArticleView>
 
     private var preOffset = 0
+    private var isLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
 
         ListPresenter(this)
     }
+
     private fun initArticleView() {
         articleView = findViewById(R.id.rl_article_root) as ArticleView
         articleBehavior = CustomBottomSheetBehavior.from(articleView)
@@ -59,7 +62,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter.loadRecentList()
+        if (!isLoaded) {
+            presenter.loadRecentList()
+            isLoaded = true
+        }
     }
 
     override fun onDestroy() {
@@ -163,13 +169,13 @@ class NewsEntryActivity : Activity(), ListContract.View {
         swipeRefreshLayout.isRefreshing = isShow
     }
 
-    override fun openArticle(newId: Int) {
-        articleView.loadNews(newId)
+    override fun openArticle(newId: Int, article: Article?) {
+        articleView.loadNews(newId, article)
         articleBehavior.state = CustomBottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun onBackPressed() {
-        if (articleBehavior.state != CustomBottomSheetBehavior.STATE_COLLAPSED){
+        if (articleBehavior.state != CustomBottomSheetBehavior.STATE_COLLAPSED) {
             articleBehavior.state = CustomBottomSheetBehavior.STATE_COLLAPSED
             return
         }
