@@ -19,7 +19,7 @@ class NewsRepository private constructor() {
         val instance = NewsRepository()
     }
 
-    fun getNewsList(index: Int, size: Int = 30) = Retrofits.cnBlogNewsApi().recentList(index, size)
+    fun getNewsList(index: Int, size: Int = 20) = Retrofits.cnBlogNewsApi().recentList(index, size)
 
     fun getNewsItem(newsId: Int) = Retrofits.cnBlogNewsApi().item(newsId)
 }

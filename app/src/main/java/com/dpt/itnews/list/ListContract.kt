@@ -14,6 +14,7 @@ interface ListContract {
         fun showTopTips(msg: String)
         fun showRefreshing(isShow: Boolean)
         fun openArticle(newId: Int, article: Article?)
+        fun refreshProcess(times: Int)
     }
 
     interface Presenter : BasePresenter {

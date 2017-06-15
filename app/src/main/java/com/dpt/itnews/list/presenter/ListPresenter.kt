@@ -26,6 +26,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     private var curNews: News = News()
     private var isLoadingNextPager = false
     private var curPageIndex = 1
+    private var times = 0
 
     init {
         view.setPresenter(this)
@@ -40,7 +41,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     }
 
     override fun loadNextPage(fistPos: Int, lastPos: Int, itemCount: Int) {
-        if (itemCount - lastPos > 15) return
+        if (itemCount - lastPos > 8) return
 
         if (isLoadingNextPager) return
 
@@ -54,6 +55,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
         }.subscribe({ news ->
             curNews = news
             view.showNews(news)
+            view.refreshProcess(0)
             curPageIndex += 1
         }, {
             it.printStackTrace()
@@ -65,7 +67,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     override fun loadRecentList(isFirst: Boolean) {
 
         if (isFirst) {
-            val subscribe = loadNews(size = 30)
+            val subscribe = loadNews(size = 15)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doFinally { Log.e(ListPresenter::class.java.simpleName, "do Finally") }
                     .subscribe { news: News ->
@@ -73,6 +75,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                         curNews = news
                         view.showNews(news)
                         view.showTopTips("首页已更新")
+                        view.refreshProcess(0)
                         curPageIndex = 1
                     }
             disposable.addAll(subscribe)
@@ -88,11 +91,13 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                         curDate > listTopDate
                     }
                     .toList()
-                    .observeOn(AndroidSchedulers.mainThread()).doOnEvent { increasedItems, _ ->
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnEvent { increasedItems, _ ->
                 Log.e(ListPresenter::class.java.simpleName, "show top tips ${increasedItems.size}")
                 view.showTopTips(if (increasedItems.size == 0) "已经是最新内容" else "${increasedItems.size}条新内容")
             }
-                    .observeOn(Schedulers.io()).zipWith(Single.just(curNews), BiFunction<List<NewsItemBody>, News, News> { increasedItems, curNews ->
+                    .observeOn(Schedulers.io())
+                    .zipWith(Single.just(curNews), BiFunction<List<NewsItemBody>, News, News> { increasedItems, curNews ->
                 if (increasedItems.isEmpty()) curNews
                 curNews.newsList.addAll(0, increasedItems)
                 curNews
@@ -101,6 +106,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                 view.showRefreshing(false)
             }
                     .subscribe({
+                        view.refreshProcess(0)
                         view.showNews(it)
                     }, {
                         it.printStackTrace()
@@ -149,19 +155,25 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
         return NewsItemBody(newsEntry.id, newsEntry.title, summary, published, iconUrl, newsEntry.sourceName, publishedData, publishedTime, newsEntry.views)
     }
 
-    private fun loadNews(index: Int = 1, size: Int = 30): Single<News> {
+    private fun loadNews(index: Int = 1, size: Int = 15): Single<News> {
+        times = 0
         return newsRepository.getNewsList(index, size)
                 .concatMap { t -> Observable.fromIterable(t.newsEntryList) }
                 .map { newsEntry: NewsEntry ->
                     transformNewsEntry(newsEntry)
                 }
-                .flatMap {
+                .concatMap {
                     newsRepository.getNewsItem(it.id)
                             .zipWith(Observable.just(it), BiFunction<NewsItem, NewsItemBody, NewsItemBody> { t1, t2 ->
                                 t2.article = t1.mapArticle()
                                 t2
                             })
                 }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    view.refreshProcess(++times)
+                }
+                .observeOn(Schedulers.io())
                 .toList()
                 .map { t ->
             val n = News()
@@ -170,13 +182,13 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
         }
     }
 
-    private fun loadNews2(index: Int = 1, size: Int = 30) {
+    private fun loadNews2(index: Int = 1, size: Int = 20) {
         newsRepository.getNewsList(index, size)
                 .concatMap { t -> Observable.fromIterable(t.newsEntryList) }
                 .map { newsEntry: NewsEntry ->
                     transformNewsEntry(newsEntry)
                 }
-                .flatMap {
+                .concatMap {
                     newsRepository.getNewsItem(it.id)
                             .zipWith(Observable.just(it), BiFunction<NewsItem, NewsItemBody, NewsItemBody> { t1, t2 ->
                                 t2.article = t1.mapArticle()

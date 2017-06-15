@@ -1,12 +1,18 @@
 package com.dpt.itnews.list.ui
 
 import android.app.Activity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import com.alibaba.android.vlayout.DelegateAdapter
@@ -35,6 +41,8 @@ class NewsEntryActivity : Activity(), ListContract.View {
     private lateinit var newsEntryAdapter: NewsEntryAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var articleView: ArticleView
+    private lateinit var processBar: ProgressBar
+    private lateinit var processToolBar: ProgressBar
     private lateinit var articleBehavior: CustomBottomSheetBehavior<ArticleView>
 
     private var preOffset = 0
@@ -50,8 +58,14 @@ class NewsEntryActivity : Activity(), ListContract.View {
         initRecyclerView()
         initSwipeRefresh()
         initArticleView()
+        initProgressBar()
 
         ListPresenter(this)
+    }
+
+    private fun initProgressBar() {
+        processBar = findViewById(R.id.pb_list) as ProgressBar
+        processToolBar = findViewById(R.id.pb_toolbar) as ProgressBar
     }
 
     private fun initArticleView() {
@@ -121,7 +135,6 @@ class NewsEntryActivity : Activity(), ListContract.View {
             if (toolBarHideRunning) {
                 return
             }
-
             appBarLayout.scrollAnim(-toolBar.bottom.toFloat(), true, { toolBarHideRunning = true }, { toolBarHideRunning = false })
 
         } else {
@@ -172,6 +185,20 @@ class NewsEntryActivity : Activity(), ListContract.View {
     override fun openArticle(newId: Int, article: Article?) {
         articleView.loadNews(newId, article)
         articleBehavior.state = CustomBottomSheetBehavior.STATE_EXPANDED
+    }
+
+    override fun refreshProcess(times: Int) {
+        processBar.progress = times
+        processToolBar.progress = times
+        if (times == 0) {
+            processBar.visibility = View.GONE
+            processBar.progress = 0
+            processToolBar.visibility = View.INVISIBLE
+            processToolBar.progress = 0
+        } else {
+            processBar.visibility = View.VISIBLE
+            processToolBar.visibility = View.VISIBLE
+        }
     }
 
     override fun onBackPressed() {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -28,6 +29,7 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
     private var titleAdapter: TitleAdapter
     private var contentAdapter: ContentAdapter
     private lateinit var presenter: ArticleContract.Presenter
+    private var behavior: CustomBottomSheetBehavior<ArticleView>? = null
 
     init {
         View.inflate(context, R.layout.view_article_content, this)
@@ -37,6 +39,9 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             statusBarHeight = resources.getDimensionPixelSize(resId)
         }
         translationY = statusBarHeight.toFloat()
+
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        toolbar.setNavigationOnClickListener { behavior?.state = CustomBottomSheetBehavior.STATE_COLLAPSED }
 
         val recyclerView = findViewById(R.id.rv_article) as RecyclerView
         val layoutManager = VirtualLayoutManager(context)
@@ -59,6 +64,7 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         contentAdapter = ContentAdapter(context, articleContentLayoutHelper)
         adapters.add(contentAdapter)
         delegateAdapter.setAdapters(adapters)
+
         ArticlePresenter(this)
     }
 
@@ -103,5 +109,6 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
 
             }
         })
+        behavior = bottomSheetBehavior
     }
 }

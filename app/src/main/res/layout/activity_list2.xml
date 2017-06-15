@@ -5,7 +5,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         >
-
     <!-- Main Content -->
     <include layout="@layout/activity_list"/>
     <!-- Bottom Sheet Content -->
