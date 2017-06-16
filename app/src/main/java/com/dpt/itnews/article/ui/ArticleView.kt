@@ -2,12 +2,17 @@ package com.dpt.itnews.article.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.RelativeLayout
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
@@ -61,7 +66,9 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         //content
         var articleContentLayoutHelper = LinearLayoutHelper()
         articleContentLayoutHelper.setDividerHeight(15)
-        contentAdapter = ContentAdapter(context, articleContentLayoutHelper)
+        contentAdapter = ContentAdapter(context, articleContentLayoutHelper) {
+            presenter.itemClick(it)
+        }
         adapters.add(contentAdapter)
         delegateAdapter.setAdapters(adapters)
 
@@ -75,9 +82,10 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
 
     fun loadNews(id: Int, article: Article?) {
         if (article != null) {
-            show(article)
+            Log.e("dpt", article.toString())
+            presenter.loadArticle(article = article)
         } else {
-            presenter.loadArticle(id)
+            presenter.loadArticle(newsId = id)
         }
     }
 
@@ -88,7 +96,17 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         contentAdapter.notifyDataSetChanged()
     }
 
-    fun setBottomSheetBehavior(bottomSheetBehavior: CustomBottomSheetBehavior<ArticleView>) {
+    override fun showPhoto(url: String) {
+        val intent = Intent(context, PhotoActivity::class.java)
+        intent.putExtra("IMG_URL", url)
+        context.startActivity(intent)
+    }
+
+    private lateinit var parentView: ViewGroup
+
+    fun setBottomSheetBehavior(bottomSheetBehavior: CustomBottomSheetBehavior<ArticleView>, onSide :(Float) ->Unit) {
+
+        parentView = parent as ViewGroup
         bottomSheetBehavior.setBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SwitchIntDef")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -106,7 +124,8 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
+                Log.e("dpt","slideOffset = $slideOffset")
+                onSide.invoke(slideOffset)
             }
         })
         behavior = bottomSheetBehavior

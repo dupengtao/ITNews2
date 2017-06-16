@@ -20,7 +20,7 @@ import com.dpt.itnews.data.vo.ArticleConstant
 /**
  * Created by dupengtao on 17/6/14.
  */
-class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper) : DelegateAdapter.Adapter<ContentAdapter.ContentHolder>() {
+class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper, val itemClick: (Int) -> Unit) : DelegateAdapter.Adapter<ContentAdapter.ContentHolder>() {
 
     var article = Article()
 
@@ -28,11 +28,11 @@ class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper) : Del
 
     override fun onBindViewHolder(holder: ContentHolder, position: Int) {
         val viewType = getItemViewType(position)
-        when(viewType){
-            ArticleConstant.TEXT_TYPE -> bindStrTypeView(holder,position)
-            ArticleConstant.IMG_TYPE -> bindImgTypeView(holder,position)
-            ArticleConstant.TEXT_STRONG_TYPE -> bindStrTypeView(holder,position)
-            ArticleConstant.TEXT_LIST_ITEM -> bindStrTypeView(holder,position)
+        when (viewType) {
+            ArticleConstant.TEXT_TYPE -> bindStrTypeView(holder, position)
+            ArticleConstant.IMG_TYPE -> bindImgTypeView(holder, position)
+            ArticleConstant.TEXT_STRONG_TYPE -> bindStrTypeView(holder, position)
+            ArticleConstant.TEXT_LIST_ITEM -> bindStrTypeView(holder, position)
         }
     }
 
@@ -41,14 +41,14 @@ class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper) : Del
 
         val iv = holder.itemView.findViewById(R.id.iv) as ImageView
 
-        if(url.endsWith(".gif")){
+        if (url.endsWith(".gif")) {
             Glide.with(iv.context)
                     .load(url)
                     .asGif()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .dontAnimate()
                     .into(iv)
-        }else {
+        } else {
             Glide.with(iv.context)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -70,7 +70,7 @@ class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper) : Del
             ArticleConstant.TEXT_LIST_ITEM -> R.layout.item_content_text_li_article
             else -> R.layout.item_content_text_article
         }
-        return ContentHolder(LayoutInflater.from(context).inflate(resId,parent,false))
+        return ContentHolder(LayoutInflater.from(context).inflate(resId, parent, false))
     }
 
     override fun getItemCount() = article.body.size
@@ -81,5 +81,8 @@ class ContentAdapter(val context: Context, val layoutHelper: LayoutHelper) : Del
 
     inner class ContentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        init {
+            itemView.setOnClickListener { itemClick.invoke(adapterPosition) }
+        }
     }
 }

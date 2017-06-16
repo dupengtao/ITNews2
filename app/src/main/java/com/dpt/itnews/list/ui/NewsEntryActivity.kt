@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
@@ -42,7 +43,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var articleView: ArticleView
     private lateinit var processBar: ProgressBar
-    private lateinit var processToolBar: ProgressBar
+    private lateinit var ivLayer: ImageView
     private lateinit var articleBehavior: CustomBottomSheetBehavior<ArticleView>
 
     private var preOffset = 0
@@ -51,27 +52,33 @@ class NewsEntryActivity : Activity(), ListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list2)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
 
         initToolBar()
         initRecyclerView()
         initSwipeRefresh()
         initArticleView()
         initProgressBar()
+        initOtherView()
 
         ListPresenter(this)
     }
 
+    private fun initOtherView() {
+       ivLayer = findViewById(R.id.iv_layer) as ImageView
+    }
+
     private fun initProgressBar() {
         processBar = findViewById(R.id.pb_list) as ProgressBar
-        processToolBar = findViewById(R.id.pb_toolbar) as ProgressBar
     }
 
     private fun initArticleView() {
         articleView = findViewById(R.id.rl_article_root) as ArticleView
         articleBehavior = CustomBottomSheetBehavior.from(articleView)
-        articleView.setBottomSheetBehavior(articleBehavior)
+        articleView.setBottomSheetBehavior(articleBehavior){
+            ivLayer.alpha = it
+        }
     }
 
     override fun onResume() {
@@ -104,8 +111,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
         recyclerView.adapter = delegateAdapter
         val adapters = LinkedList<DelegateAdapter.Adapter<*>>()
         newsEntryAdapter = NewsEntryAdapter(this, LinearLayoutHelper(), {
-            i ->
-            presenter.jumpArticle(i)
+            presenter.jumpArticle(it)
         })
         adapters.add(newsEntryAdapter)
 
@@ -189,15 +195,11 @@ class NewsEntryActivity : Activity(), ListContract.View {
 
     override fun refreshProcess(times: Int) {
         processBar.progress = times
-        processToolBar.progress = times
         if (times == 0) {
             processBar.visibility = View.GONE
             processBar.progress = 0
-            processToolBar.visibility = View.INVISIBLE
-            processToolBar.progress = 0
         } else {
             processBar.visibility = View.VISIBLE
-            processToolBar.visibility = View.VISIBLE
         }
     }
 

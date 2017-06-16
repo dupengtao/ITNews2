@@ -11,10 +11,12 @@ interface ArticleContract {
 
     interface View : BaseView<Presenter> {
         fun show(article: Article)
+        fun showPhoto(url: String)
     }
 
     interface Presenter : BasePresenter {
 
-        fun loadArticle(newsId: Int)
+        fun loadArticle(newsId: Int = 0, article: Article? = null)
+        fun itemClick(position: Int)
     }
 }

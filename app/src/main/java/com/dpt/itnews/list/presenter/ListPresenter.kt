@@ -41,11 +41,16 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     }
 
     override fun loadNextPage(fistPos: Int, lastPos: Int, itemCount: Int) {
+
+        if (itemCount == 0) return
+
         if (itemCount - lastPos > 8) return
 
         if (isLoadingNextPager) return
 
         isLoadingNextPager = true
+
+        Log.e(ListPresenter::class.java.simpleName, "loadNextPage index = ${curPageIndex + 1}")
 
         val subscribe = Observable.zip(Observable.just(curNews), loadNews(curPageIndex + 1).toObservable(), BiFunction<News, News, News> { oldNews, news ->
             oldNews.newsList.addAll(news.newsList)
@@ -93,15 +98,18 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                     .toList()
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnEvent { increasedItems, _ ->
-                Log.e(ListPresenter::class.java.simpleName, "show top tips ${increasedItems.size}")
-                view.showTopTips(if (increasedItems.size == 0) "已经是最新内容" else "${increasedItems.size}条新内容")
-            }
+                        Log.e(ListPresenter::class.java.simpleName, "show top tips ${increasedItems.size}")
+                        view.showTopTips(if (increasedItems.size == 0) "已经是最新内容" else "${increasedItems.size}条新内容")
+                    }
                     .observeOn(Schedulers.io())
                     .zipWith(Single.just(curNews), BiFunction<List<NewsItemBody>, News, News> { increasedItems, curNews ->
-                if (increasedItems.isEmpty()) curNews
-                curNews.newsList.addAll(0, increasedItems)
-                curNews
-            })
+                        if (increasedItems.isEmpty()) {
+                            curNews
+                        } else {
+                            curNews.newsList.addAll(0, increasedItems)
+                            curNews
+                        }
+                    })
                     .observeOn(AndroidSchedulers.mainThread()).doFinally {
                 view.showRefreshing(false)
             }
@@ -119,7 +127,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
 
     override fun jumpArticle(position: Int) {
         val newsBody = curNews.newsList[position]
-        view.openArticle(newsBody.id,newsBody.article)
+        view.openArticle(newsBody.id, newsBody.article)
     }
 
     private fun transformNewsEntry(newsEntry: NewsEntry): NewsItemBody {
@@ -176,10 +184,10 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                 .observeOn(Schedulers.io())
                 .toList()
                 .map { t ->
-            val n = News()
-            n.newsList.addAll(t)
-            n
-        }
+                    val n = News()
+                    n.newsList.addAll(t)
+                    n
+                }
     }
 
     private fun loadNews2(index: Int = 1, size: Int = 20) {
@@ -195,7 +203,6 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                                 t2
                             })
                 }
-
 
 
     }

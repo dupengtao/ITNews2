@@ -35,13 +35,6 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             >
-        <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:id="@+id/pb_toolbar"
-                android:max="15"
-                />
         <android.support.v7.widget.Toolbar
                 android:id="@+id/tb_list"
                 android:layout_width="match_parent"
@@ -56,5 +49,14 @@
             android:layout_height="2dp"
             android:id="@+id/pb_list"
             android:max="15"
+            android:elevation="4dp"
+            />
+    <ImageView
+            android:id="@+id/iv_layer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#AA000000"
+            android:alpha="0"
+            android:elevation="5dp"
             />
 </FrameLayout>

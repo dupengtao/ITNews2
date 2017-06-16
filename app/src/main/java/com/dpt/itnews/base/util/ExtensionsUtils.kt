@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.support.v7.widget.Toolbar
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -58,8 +59,14 @@ fun NewsItem.mapArticle(): Article {
                     val img = element.child(0)
                     if (img != null) {
                         val sb = StringBuilder(img.attr("src"))
+                        val url = if(sb.startsWith("http")){
+                            sb.toString()
+                        }else{
+                            sb.insert(0, "https:")
+                            sb.toString()
+                        }
                         sb.insert(0, "https:")
-                        article.body.add(ArticleBody(ArticleConstant.IMG_TYPE, url = sb.toString()))
+                        article.body.add(ArticleBody(ArticleConstant.IMG_TYPE, url = url))
                     }
                 }
                 else -> {
