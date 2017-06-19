@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "976734247800",
+    "project_id": "firebase-itnews"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976734247800:android:337ff3e71b2b126c",
+        "android_client_info": {
+          "package_name": "com.dpt.itnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976734247800-cobva2t1sc1hf7gsd1b6e7h7h7ch1ust.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_LHReZwziVihClcb8zs1R8_pV5k9-ito"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-101166046-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

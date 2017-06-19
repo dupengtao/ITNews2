@@ -110,9 +110,9 @@ class NewsEntryActivity : Activity(), ListContract.View {
         val delegateAdapter = DelegateAdapter(layoutManager, true)
         recyclerView.adapter = delegateAdapter
         val adapters = LinkedList<DelegateAdapter.Adapter<*>>()
-        newsEntryAdapter = NewsEntryAdapter(this, LinearLayoutHelper(), {
+        newsEntryAdapter = NewsEntryAdapter(this, LinearLayoutHelper()){
             presenter.jumpArticle(it)
-        })
+        }
         adapters.add(newsEntryAdapter)
 
         delegateAdapter.setAdapters(adapters)
@@ -200,6 +200,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
             processBar.progress = 0
         } else {
             processBar.visibility = View.VISIBLE
+
         }
     }
 
