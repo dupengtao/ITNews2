@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="listBackground" format="color" />
+    <attr name="listItemBackground" format="color" />
+    <attr name="listTitleTextColor" format="color" />
+    <attr name="listItemDivideColor" format="color" />
+    <attr name="listSummaryTextColor" format="color" />
+    <attr name="listDateTextColor" format="color" />
+    <attr name="toolbarBackground" format="color" />
+    <attr name="toolbarTitleColor" format="color" />
+</resources>

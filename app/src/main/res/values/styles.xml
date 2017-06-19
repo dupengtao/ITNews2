@@ -6,7 +6,7 @@
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@android:color/black</item>
-
+        <item name="actionOverflowMenuStyle">@style/PopupMenu</item>
     </style>
 
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
@@ -14,22 +14,58 @@
         <item name="android:titleTextColor">@color/barColor</item>
     </style>
 
-    <style name="AppTheme.Swipe" parent="AppTheme">
+    <style name="AppTheme.Day" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="listBackground">@color/listBg</item>
+        <item name="listTitleTextColor">@color/listTitleColor</item>
+        <item name="listItemBackground">@color/listItemBg</item>
+        <item name="listItemDivideColor">@color/listDivide</item>
+        <item name="listSummaryTextColor">@color/listSummaryColor</item>
+        <item name="listDateTextColor">@color/listDateColor</item>
+        <item name="toolbarBackground">@color/toolBarBg</item>
+        <item name="toolbarTitleColor">@color/toolBarTitleColor</item>
     </style>
 
-
-    <style name="Theme.Swipe.Back" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Night" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="listBackground">@color/listBg_Night</item>
+        <item name="listTitleTextColor">@color/listTitleColor_Night</item>
+        <item name="listItemBackground">@color/listItemBg_Night</item>
+        <item name="listItemDivideColor">@color/listDivide_Night</item>
+        <item name="listSummaryTextColor">@color/listSummaryColor_Night</item>
+        <item name="listDateTextColor">@color/listDateColor_Night</item>
+        <item name="toolbarBackground">@color/toolBarBg_Night</item>
+        <item name="toolbarTitleColor">@color/toolBarTitleColor_Night</item>
     </style>
 
-    <style name="Theme.No.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="actionOverflowMenuStyle">@style/PopupMenu</item>
     </style>
+    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <!--<item name="android:popupBackground">@color/colorPrimary</item>-->
+
+        <!-- Required for pre-Lollipop. -->
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">-8.0dp</item>
+
+        <!-- Required for Lollipop. -->
+        <!--<item name="android:overlapAnchor">false</item>-->
+        <!--<item name="android:dropDownVerticalOffset">-4.0dip</item>-->
+    </style>
+
+    <!--<style name="Theme.Swipe.Back" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--<item name="android:windowIsTranslucent">true</item>-->
+    <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+    <!--<item name="windowActionBar">false</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--</style>-->
+
+    <!--<style name="Theme.No.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--<item name="windowActionBar">false</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--</style>-->
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">@android:color/black</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -9,4 +9,30 @@
     <color name="black_p50">#7f000000</color>
 
     <color name="barColor">#262626</color>
+
+    <color name="listBg">@android:color/white</color>
+    <color name="listTitleColor">#191919</color>
+    <color name="listItemBg">@android:color/white</color>
+    <color name="listDivide">#EFF1F5</color>
+    <color name="listSummaryColor">#262626</color>
+    <color name="listDateColor">#7E8B93</color>
+    <color name="toolBarBg">@android:color/white</color>
+    <color name="toolBarTitleColor">@android:color/black</color>
+    <color name="barIconColor">#262626</color>
+    <color name="statusBarColor">#676767</color>
+
+
+
+    <!--Night-->
+    <color name="listBg_Night">#2A373E</color>
+    <color name="listTitleColor_Night">#DFE1E2</color>
+    <color name="listItemBg_Night">#2A373E</color>
+    <color name="listDivide_Night">#192024</color>
+    <color name="listSummaryColor_Night">#929B9E</color>
+    <color name="listDateColor_Night">#677C85</color>
+    <color name="toolBarBg_Night">#1C262B</color>
+    <color name="toolBarTitleColor_Night">@android:color/white</color>
+    <color name="barIconColor_Night">@android:color/white</color>
+    <color name="statusBarColor_Night">#171E22</color>
+
 </resources>

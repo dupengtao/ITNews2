@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
             android:allowBackup="true"
@@ -17,7 +18,7 @@
             >
         <activity
                 android:name=".list.ui.NewsEntryActivity"
-                android:theme="@style/AppTheme.Swipe"
+                android:theme="@style/AppTheme.Day"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -34,6 +35,24 @@
         <!--<category android:name="android.intent.category.LAUNCHER"/>-->
         <!--</intent-filter>-->
         <!--</activity>-->
+
+
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+             dispatching on non-Google Play devices. -->
+        <receiver
+                android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+                android:enabled="true"
+                >
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH"/>
+            </intent-filter>
+        </receiver>
+        <service
+                android:name="com.google.android.gms.analytics.AnalyticsService"
+                android:enabled="true"
+                android:exported="false"
+                />
+
     </application>
 
 </manifest>

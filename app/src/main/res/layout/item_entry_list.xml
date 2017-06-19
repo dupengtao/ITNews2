@@ -2,9 +2,11 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ll_box_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="?attr/listItemBackground"
         >
 
     <ImageView
@@ -18,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@android:color/white"
             >
 
         <TextView
@@ -26,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="#191919"
+                android:textColor="?attr/listTitleTextColor"
                 android:textStyle="bold"
                 />
 
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_title"
                 android:layout_marginTop="10dp"
-                android:textColor="#262626"
+                android:textColor="?attr/listSummaryTextColor"
                 android:textSize="16sp"
                 android:lineSpacingExtra="6dp"
                 />
@@ -72,15 +73,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:textColor="#7E8B93"
+                    android:textColor="?attr/listDateTextColor"
                     android:layout_marginStart="10dp"
                     android:maxLines="1"
                     />
         </LinearLayout>
     </RelativeLayout>
     <ImageView
+            android:id="@+id/iv_divide"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="#EFF1F5"
+            android:background="?attr/listItemDivideColor"
             />
 </LinearLayout>

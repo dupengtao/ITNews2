@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/fl_list"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@android:color/white"
+             android:background="?attr/listBackground"
         >
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -33,7 +34,7 @@
             android:id="@+id/abl_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="?attr/toolbarBackground"
             >
         <android.support.v7.widget.Toolbar
                 android:id="@+id/tb_list"
