@@ -25,6 +25,10 @@
         <item name="listDateTextColor">@color/listDateColor</item>
         <item name="toolbarBackground">@color/toolBarBg</item>
         <item name="toolbarTitleColor">@color/toolBarTitleColor</item>
+        <item name="toolbarArticleBackground">@color/toolBarArticleBg</item>
+        <item name="articleTitleColor">@color/articleTitleColor</item>
+        <item name="articleBackground">@color/articleContentBg</item>
+        <item name="articleContentColor">@color/articleContentTextColor</item>
     </style>
 
     <style name="AppTheme.Night" parent="AppTheme">
@@ -38,6 +42,10 @@
         <item name="listDateTextColor">@color/listDateColor_Night</item>
         <item name="toolbarBackground">@color/toolBarBg_Night</item>
         <item name="toolbarTitleColor">@color/toolBarTitleColor_Night</item>
+        <item name="toolbarArticleBackground">@color/toolBarArticleBg_Night</item>
+        <item name="articleTitleColor">@color/articleTitleColor_Night</item>
+        <item name="articleBackground">@color/articleContentBg_Night</item>
+        <item name="articleContentColor">@color/articleContentTextColor_Night</item>
     </style>
 
 

@@ -20,6 +20,12 @@
     <color name="toolBarTitleColor">@android:color/black</color>
     <color name="barIconColor">#262626</color>
     <color name="statusBarColor">#676767</color>
+    <color name="articleTitleColor">#434343</color>
+    <color name="toolBarArticleBg">@android:color/white</color>
+    <color name="articleContentBg">@android:color/white</color>
+    <color name="articleContentTextColor">#232323</color>
+    <color name="articleToolbarDivide">#D5D5D5</color>
+
 
 
 
@@ -34,5 +40,10 @@
     <color name="toolBarTitleColor_Night">@android:color/white</color>
     <color name="barIconColor_Night">@android:color/white</color>
     <color name="statusBarColor_Night">#171E22</color>
+    <color name="articleTitleColor_Night">@android:color/white</color>
+    <color name="toolBarArticleBg_Night">#1C262B</color>
+    <color name="articleContentBg_Night">#2A373E</color>
+    <color name="articleContentTextColor_Night">#858B8E</color>
+    <color name="articleToolbarDivide_Night">#232F35</color>
 
 </resources>

@@ -275,6 +275,9 @@ class NewsEntryActivity : Activity(), ListContract.View {
         }else{
             processBar.progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         }
+
+        //articleView
+        articleView.refreshUI(isDayMode)
     }
 
     private fun refreshStatusBar(dayMode: Boolean) {

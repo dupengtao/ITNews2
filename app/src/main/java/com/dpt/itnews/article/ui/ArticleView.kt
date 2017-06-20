@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.support.design.widget.AppBarLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.RelativeLayout
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
@@ -22,6 +22,7 @@ import com.dpt.itnews.article.ArticleContract
 import com.dpt.itnews.article.presenter.ArticlePresenter
 import com.dpt.itnews.article.ui.adapter.ContentAdapter
 import com.dpt.itnews.article.ui.adapter.TitleAdapter
+import com.dpt.itnews.base.util.RecyclerViewHelper
 import com.dpt.itnews.base.widget.CustomBottomSheetBehavior
 import com.dpt.itnews.data.vo.Article
 import java.util.*
@@ -35,6 +36,10 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
     private var contentAdapter: ContentAdapter
     private lateinit var presenter: ArticleContract.Presenter
     private var behavior: CustomBottomSheetBehavior<ArticleView>? = null
+    private var toolbar: Toolbar
+    private var appBarLayout: AppBarLayout
+
+    private var recyclerView: RecyclerView
 
     init {
         View.inflate(context, R.layout.view_article_content, this)
@@ -45,10 +50,11 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         }
         translationY = statusBarHeight.toFloat()
 
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        appBarLayout = findViewById(R.id.abl_article) as AppBarLayout
+        toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.setNavigationOnClickListener { behavior?.state = CustomBottomSheetBehavior.STATE_COLLAPSED }
 
-        val recyclerView = findViewById(R.id.rv_article) as RecyclerView
+        recyclerView = findViewById(R.id.rv_article) as RecyclerView
         val layoutManager = VirtualLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         val viewPool = RecyclerView.RecycledViewPool()
@@ -104,7 +110,7 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
 
     private lateinit var parentView: ViewGroup
 
-    fun setBottomSheetBehavior(bottomSheetBehavior: CustomBottomSheetBehavior<ArticleView>, onSide :(Float) ->Unit) {
+    fun setBottomSheetBehavior(bottomSheetBehavior: CustomBottomSheetBehavior<ArticleView>, onSide: (Float) -> Unit) {
 
         parentView = parent as ViewGroup
         bottomSheetBehavior.setBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback() {
@@ -124,10 +130,32 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.e("dpt","slideOffset = $slideOffset")
+                Log.e("dpt", "slideOffset = $slideOffset")
                 onSide.invoke(slideOffset)
             }
         })
         behavior = bottomSheetBehavior
+    }
+
+    fun refreshUI(isDay: Boolean) {
+        val toolbarArticleBackground = TypedValue()
+        val articleTitleColor = TypedValue()
+        val articleBackground = TypedValue()
+        context.theme.resolveAttribute(R.attr.toolbarArticleBackground, toolbarArticleBackground, true)
+        context.theme.resolveAttribute(R.attr.articleTitleColor, articleTitleColor, true)
+        context.theme.resolveAttribute(R.attr.articleBackground, articleBackground, true)
+        appBarLayout.setBackgroundResource(toolbarArticleBackground.resourceId)
+        this.setBackgroundResource(articleBackground.resourceId)
+
+        if (isDay) {
+            toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_article_cancel)
+            findViewById(R.id.v_toolbar_divide).setBackgroundColor(resources.getColor(R.color.articleToolbarDivide))
+        } else {
+            toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_article_cancel_night)
+            findViewById(R.id.v_toolbar_divide).setBackgroundColor(resources.getColor(R.color.articleToolbarDivide_Night))
+        }
+
+
+        RecyclerViewHelper.clearCache(recyclerView)
     }
 }
