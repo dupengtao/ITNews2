@@ -28,6 +28,10 @@
         </activity>
 
         <activity android:name=".article.ui.PhotoActivity"/>
+
+        <activity android:name=".settings.SettingsActivity"
+                  android:theme="@style/AppTheme.Day"
+                />
         <!--<activity android:name=".MainActivity">-->
         <!--<intent-filter>-->
         <!--<action android:name="android.intent.action.MAIN"/>-->

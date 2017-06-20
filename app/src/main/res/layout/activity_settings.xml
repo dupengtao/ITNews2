@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/fl_list"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?attr/listBackground"
+              android:orientation="vertical"
+        >
+
+
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/abl_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/toolbarBackground"
+            >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_list"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:theme="@style/ToolbarColoredBackArrow"
+                app:title="@string/action_setting"
+                />
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            >
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="夜间模式"
+                android:textColor="?attr/articleContentColor"
+                android:textSize="16sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                />
+        <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/switch1"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+    </RelativeLayout>
+
+    <View
+            android:id="@+id/v_divide1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#D5D5D5"
+            />
+
+    <RelativeLayout
+            android:id="@+id/rl_settings_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            >
+        <TextView
+                android:id="@+id/tv_settings_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版本更新"
+                android:textColor="?attr/articleContentColor"
+                android:textSize="16sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                />
+    </RelativeLayout>
+
+    <View
+            android:id="@+id/v_divide2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#D5D5D5"
+            />
+
+</LinearLayout>

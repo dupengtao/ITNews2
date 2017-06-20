@@ -1,6 +1,6 @@
 package com.dpt.itnews.api
 
-import com.dpt.itnews.api.cnBlog.CnBlogNewsApis
+import com.dpt.itnews.api.cnBlog.CnBlogNewsApis2
 import com.dpt.itnews.api.cnBlog.CnBlogNewsClient
 
 /**
@@ -10,7 +10,7 @@ object Retrofits {
 
     private val SINGLETON = CnBlogNewsClient().cnBlogNewsApis
 
-    fun cnBlogNewsApi(): CnBlogNewsApis {
+    fun cnBlogNewsApi(): CnBlogNewsApis2 {
         return SINGLETON
     }
 

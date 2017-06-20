@@ -14,7 +14,8 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory
  */
 class CnBlogNewsClient {
 
-    lateinit var cnBlogNewsApis: CnBlogNewsApis
+//    lateinit var cnBlogNewsApis: CnBlogNewsApis
+    lateinit var cnBlogNewsApis: CnBlogNewsApis2
 
     init {
         initCnBlogNewsApi()
@@ -39,7 +40,8 @@ class CnBlogNewsClient {
                 .client(okHttpClientBuilder.build())
                 .build()
 
-        cnBlogNewsApis = retrofit.create(CnBlogNewsApis::class.java)
+//        cnBlogNewsApis = retrofit.create(CnBlogNewsApis::class.java)
+        cnBlogNewsApis = retrofit.create(CnBlogNewsApis2::class.java)
 
     }
 }

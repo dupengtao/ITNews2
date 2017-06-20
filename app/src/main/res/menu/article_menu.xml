@@ -25,27 +25,16 @@
 
 
     <item
-            android:id="@+id/action_up"
+            android:id="@+id/action_article_up"
             android:title="@string/action_up"
             android:icon="@drawable/ic_up_arrow_angle"
             app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/action_settings"
-            android:title="@string/action_setting"
-            android:icon="@drawable/ic_settings"
+            android:id="@+id/action_article_share"
+            android:title="@string/action_share"
+            android:icon="@drawable/ic_share"
             app:showAsAction="ifRoom"/>
 
-    <item
-            android:id="@+id/action_change_theme"
-            android:title="@string/action_change_theme"
-            app:showAsAction="never"
-            android:checkable="true"
-            />
-
-    <item
-            android:id="@+id/action_about"
-            android:title="@string/about"
-            app:showAsAction="never"/>
 
 </menu>

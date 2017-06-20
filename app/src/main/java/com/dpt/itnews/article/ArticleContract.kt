@@ -1,5 +1,6 @@
 package com.dpt.itnews.article
 
+import android.content.Context
 import com.dpt.itnews.base.BasePresenter
 import com.dpt.itnews.base.BaseView
 import com.dpt.itnews.data.vo.Article
@@ -18,5 +19,6 @@ interface ArticleContract {
 
         fun loadArticle(newsId: Int = 0, article: Article? = null)
         fun itemClick(position: Int)
+        fun shareArticle(context: Context)
     }
 }

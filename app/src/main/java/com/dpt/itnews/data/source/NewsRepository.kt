@@ -1,7 +1,9 @@
 package com.dpt.itnews.data.source
 
 import com.dpt.itnews.api.Retrofits
+import com.dpt.itnews.data.po.NewsItem
 import com.dpt.itnews.data.po.NewsList
+import com.dpt.itnews.data.po.VersionUpgradeInfo
 import io.reactivex.Observable
 
 /**
@@ -21,5 +23,12 @@ class NewsRepository private constructor() {
 
     fun getNewsList(index: Int, size: Int = 20) = Retrofits.cnBlogNewsApi().recentList(index, size)
 
-    fun getNewsItem(newsId: Int) = Retrofits.cnBlogNewsApi().item(newsId)
+    fun getNewsItem(newsId: Int): Observable<NewsItem> = Retrofits.cnBlogNewsApi().item(newsId)
+
+
+    fun checkNewVersion(): Observable<VersionUpgradeInfo>{
+        return Retrofits.cnBlogNewsApi().checkVersion("https://api.leancloud.cn/1.1/classes/version?order=-createdAt&limit=1")
+    }
+
+
 }

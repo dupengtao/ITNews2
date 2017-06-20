@@ -3,7 +3,6 @@ package com.dpt.itnews.article.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.RecyclerView
@@ -39,7 +38,7 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
     private var toolbar: Toolbar
     private var appBarLayout: AppBarLayout
 
-    private var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
     init {
         View.inflate(context, R.layout.view_article_content, this)
@@ -53,6 +52,18 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
         appBarLayout = findViewById(R.id.abl_article) as AppBarLayout
         toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.setNavigationOnClickListener { behavior?.state = CustomBottomSheetBehavior.STATE_COLLAPSED }
+        toolbar.inflateMenu(R.menu.article_menu)
+        toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.action_article_up -> {
+                    recyclerView.smoothScrollToPosition(0)
+                }
+                R.id.action_article_share ->{
+                    presenter.shareArticle(getContext())
+                }
+            }
+            true
+        }
 
         recyclerView = findViewById(R.id.rv_article) as RecyclerView
         val layoutManager = VirtualLayoutManager(context)
@@ -88,8 +99,8 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
 
     fun loadNews(id: Int, article: Article?) {
         if (article != null) {
-            Log.e("dpt", article.toString())
-            presenter.loadArticle(article = article)
+//            Log.e("dpt", article.toString())
+            presenter.loadArticle(id,article)
         } else {
             presenter.loadArticle(newsId = id)
         }
@@ -130,7 +141,7 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.e("dpt", "slideOffset = $slideOffset")
+//                Log.e("dpt", "slideOffset = $slideOffset")
                 onSide.invoke(slideOffset)
             }
         })
@@ -149,9 +160,13 @@ class ArticleView(context: Context, attrs: AttributeSet) : RelativeLayout(contex
 
         if (isDay) {
             toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_article_cancel)
+            toolbar.menu.findItem(R.id.action_article_share).icon = resources.getDrawable(R.drawable.ic_share)
+            toolbar.menu.findItem(R.id.action_article_up).icon = resources.getDrawable(R.drawable.ic_up_arrow_angle)
             findViewById(R.id.v_toolbar_divide).setBackgroundColor(resources.getColor(R.color.articleToolbarDivide))
         } else {
             toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_article_cancel_night)
+            toolbar.menu.findItem(R.id.action_article_share).icon = resources.getDrawable(R.drawable.ic_share_night)
+            toolbar.menu.findItem(R.id.action_article_up).icon = resources.getDrawable(R.drawable.ic_up_arrow_angle_night)
             findViewById(R.id.v_toolbar_divide).setBackgroundColor(resources.getColor(R.color.articleToolbarDivide_Night))
         }
 
