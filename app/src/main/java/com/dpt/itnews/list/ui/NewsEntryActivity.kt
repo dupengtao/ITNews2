@@ -29,10 +29,7 @@ import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.dpt.itnews.R
 import com.dpt.itnews.article.ui.ArticleView
-import com.dpt.itnews.base.util.DayNight
-import com.dpt.itnews.base.util.DayNightHelper
-import com.dpt.itnews.base.util.RecyclerViewHelper
-import com.dpt.itnews.base.util.scrollAnim
+import com.dpt.itnews.base.util.*
 import com.dpt.itnews.base.widget.CustomBottomSheetBehavior
 import com.dpt.itnews.data.vo.Article
 import com.dpt.itnews.data.vo.News
@@ -76,15 +73,13 @@ class NewsEntryActivity : Activity(), ListContract.View {
         initArticleView()
         initProgressBar()
         initOtherView()
+        dayNightHelper = DayNightHelper(this)
         initTheme()
 
         ListPresenter(this)
     }
 
     private fun initTheme() {
-
-        dayNightHelper = DayNightHelper(this)
-
         val isDay = if (dayNightHelper.isDay()) {
             setTheme(R.style.AppTheme_Day)
             true
@@ -199,7 +194,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
                     recyclerView.smoothScrollToPosition(0)
                 }
                 R.id.action_change_theme -> {
-                    showAnimation(this)
+                    showDayNightAnimation()
                     val isDay = if (dayNightHelper.isDay()) {
                         item.isChecked = true
                         setTheme(R.style.AppTheme_Night)
@@ -215,7 +210,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
                 }
                 R.id.action_settings ->{
                     val intent = Intent(this,SettingsActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent,1)
                 }
             }
             true
@@ -339,50 +334,12 @@ class NewsEntryActivity : Activity(), ListContract.View {
         super.onBackPressed()
     }
 
-
-    /**
-     * 获取一个 View 的缓存视图
-
-     * @param view
-     * *
-     * @return
-     */
-    private fun getCacheBitmapFromView(view: View): Bitmap? {
-        val drawingCacheEnabled = true
-        view.isDrawingCacheEnabled = drawingCacheEnabled
-        view.buildDrawingCache(drawingCacheEnabled)
-        val drawingCache = view.drawingCache
-        val bitmap: Bitmap?
-        if (drawingCache != null) {
-            bitmap = Bitmap.createBitmap(drawingCache)
-            view.isDrawingCacheEnabled = false
-        } else {
-            bitmap = null
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val isChange = data.getBooleanExtra("IS_CHANGE",false)
+        if(isChange){
+            initTheme()
         }
-        return bitmap
-    }
-
-    /**
-     * 展示一个切换动画
-     */
-    fun showAnimation(context: Activity) {
-        val decorView = context.window.decorView
-        val cacheBitmap = getCacheBitmapFromView(decorView)
-        if (decorView is ViewGroup && cacheBitmap != null) {
-            val view = View(context)
-            view.setBackgroundDrawable(BitmapDrawable(context.resources, cacheBitmap))
-            val layoutParam = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
-            decorView.addView(view, layoutParam)
-            val objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
-            objectAnimator.duration = 300
-            objectAnimator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    decorView.removeView(view)
-                }
-            })
-            objectAnimator.start()
-        }
+        Log.e("dpt","isChange = $isChange")
     }
 }

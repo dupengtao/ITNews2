@@ -22,18 +22,23 @@
                 android:layout_height="50dp"
                 android:theme="@style/ToolbarColoredBackArrow"
                 app:title="@string/action_setting"
+                app:navigationIcon="@drawable/ic_back"
+                app:contentInsetStartWithNavigation="0dp"
                 />
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
+            android:id="@+id/rl_settings_dayNight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
+            android:minHeight="60dp"
             >
         <TextView
+                android:id="@+id/tv_settings_dayNight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="夜间模式"
@@ -44,8 +49,8 @@
                 />
         <Switch
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:id="@+id/switch1"
+                android:layout_height="30dp"
+                android:id="@+id/sDayNight"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 />
@@ -56,6 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="#D5D5D5"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             />
 
     <RelativeLayout
@@ -66,6 +73,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
+            android:minHeight="60dp"
             >
         <TextView
                 android:id="@+id/tv_settings_update"
@@ -84,6 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="#D5D5D5"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             />
 
 </LinearLayout>

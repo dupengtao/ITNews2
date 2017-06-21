@@ -26,9 +26,6 @@ class NewsRepository private constructor() {
     fun getNewsItem(newsId: Int): Observable<NewsItem> = Retrofits.cnBlogNewsApi().item(newsId)
 
 
-    fun checkNewVersion(): Observable<VersionUpgradeInfo>{
-        return Retrofits.cnBlogNewsApi().checkVersion("https://api.leancloud.cn/1.1/classes/version?order=-createdAt&limit=1")
-    }
-
+    fun checkNewVersion() =  Retrofits.cnBlogNewsApi().checkVersion("https://api.leancloud.cn/1.1/classes/version?order=-createdAt&limit=1")
 
 }

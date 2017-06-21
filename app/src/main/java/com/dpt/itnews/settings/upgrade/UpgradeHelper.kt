@@ -13,13 +13,12 @@ class UpgradeHelper {
         val curVersion = BuildConfig.VERSION_CODE
     }
 
-    fun checkVersionInfo(){
+    fun checkVersionInfo() {
         NewsRepository.get().checkNewVersion()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it ->
-                    print(it)
-                },{
-                    it.printStackTrace()
-                })
+                .subscribe {
+                    println(it)
+                }
+
     }
 }

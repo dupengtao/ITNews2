@@ -2,10 +2,15 @@ package com.dpt.itnews.base.util
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.dpt.itnews.data.po.NewsItem
@@ -91,4 +96,51 @@ fun NewsItem.mapArticle(): Article {
     article.title = this.title
 
     return article
+}
+
+
+/**
+ * 获取一个 View 的缓存视图
+
+ * @param view
+ * *
+ * @return
+ */
+private fun getCacheBitmapFromView(view: View): Bitmap? {
+    val drawingCacheEnabled = true
+    view.isDrawingCacheEnabled = drawingCacheEnabled
+    view.buildDrawingCache(drawingCacheEnabled)
+    val drawingCache = view.drawingCache
+    val bitmap: Bitmap?
+    if (drawingCache != null) {
+        bitmap = Bitmap.createBitmap(drawingCache)
+        view.isDrawingCacheEnabled = false
+    } else {
+        bitmap = null
+    }
+    return bitmap
+}
+
+/**
+ * 展示一个切换动画
+ */
+fun Activity.showDayNightAnimation() {
+    val decorView = this.window.decorView
+    val cacheBitmap = getCacheBitmapFromView(decorView)
+    if (decorView is ViewGroup && cacheBitmap != null) {
+        val view = View(this)
+        view.setBackgroundDrawable(BitmapDrawable(this.resources, cacheBitmap))
+        val layoutParam = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        decorView.addView(view, layoutParam)
+        val objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
+        objectAnimator.duration = 300
+        objectAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                decorView.removeView(view)
+            }
+        })
+        objectAnimator.start()
+    }
 }
