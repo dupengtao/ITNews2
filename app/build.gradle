@@ -15,9 +15,27 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("key")
+            storePassword 'itnews'
+            keyAlias 'itnews'
+            keyPassword 'itnews'
+        }
+    }
+
     buildTypes {
         release {
+            debuggable false
+            //混淆
             minifyEnabled false
+            //
+            zipAlignEnabled true
+            //移除无用的res
+            shrinkResources false
+
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

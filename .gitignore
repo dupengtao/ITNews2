@@ -36,3 +36,5 @@ gradle
 .idea/gradle.xml
 # Gradle cache
 .gradle
+app/libs/
+app/key

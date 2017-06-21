@@ -30,7 +30,7 @@ class NewsApplication : Application() {
     }
 
 
-    inner class AnalyticsExceptionParser() : ExceptionParser {
+    inner class AnalyticsExceptionParser : ExceptionParser {
 
         override fun getDescription(p0: String?, t: Throwable?): String {
             if (t == null)
@@ -47,7 +47,7 @@ class NewsApplication : Application() {
     }
 
     //Tracker var1, UncaughtExceptionHandler var2, Context var3
-    inner class AnalyticsExceptionReporter(val v1: Tracker, val v2: Thread.UncaughtExceptionHandler, val v3: Context) : ExceptionReporter(v1, v2, v3) {
+    inner class AnalyticsExceptionReporter(v1: Tracker, v2: Thread.UncaughtExceptionHandler,  v3: Context) : ExceptionReporter(v1, v2, v3) {
         init {
             exceptionParser = AnalyticsExceptionParser()
         }
