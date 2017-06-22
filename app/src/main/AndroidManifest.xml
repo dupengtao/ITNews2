@@ -29,8 +29,12 @@
 
         <activity android:name=".article.ui.PhotoActivity"/>
 
-        <activity android:name=".settings.SettingsActivity"
+        <activity android:name=".settings.ui.SettingsActivity"
                   android:theme="@style/AppTheme.Day"
+                />
+
+        <activity android:name=".settings.ui.UpgradeDialogActivity"
+                  android:theme="@style/Theme.ActivityDialogStyle"
                 />
         <!--<activity android:name=".MainActivity">-->
         <!--<intent-filter>-->

@@ -1,24 +1,19 @@
 package com.dpt.itnews.list.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.util.TypedValue
-import android.view.*
+import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -36,7 +31,7 @@ import com.dpt.itnews.data.vo.News
 import com.dpt.itnews.list.ListContract
 import com.dpt.itnews.list.presenter.ListPresenter
 import com.dpt.itnews.list.ui.adapter.NewsEntryAdapter
-import com.dpt.itnews.settings.SettingsActivity
+import com.dpt.itnews.settings.ui.SettingsActivity
 import java.util.*
 
 /**
@@ -209,7 +204,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
                     refreshUI(isDay)
                 }
                 R.id.action_settings ->{
-                    val intent = Intent(this,SettingsActivity::class.java)
+                    val intent = Intent(this, SettingsActivity::class.java)
                     startActivityForResult(intent,1)
                 }
             }

@@ -64,6 +64,15 @@
         <!--<item name="android:dropDownVerticalOffset">-4.0dip</item>-->
     </style>
 
+
+    <style name="Theme.ActivityDialogStyle" parent="AppTheme.Day">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/black_p50</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
     <!--<style name="Theme.Swipe.Back" parent="Theme.AppCompat.Light.NoActionBar">-->
     <!--<item name="android:windowIsTranslucent">true</item>-->
     <!--<item name="android:windowBackground">@android:color/transparent</item>-->
