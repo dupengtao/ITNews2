@@ -329,10 +329,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
         super.onBackPressed()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val isChange = data.getBooleanExtra("IS_CHANGE",false)
-        if(isChange){
+        val isChange = data?.getBooleanExtra("IS_CHANGE",false)
+        if(isChange is Boolean && isChange){
             initTheme()
         }
         Log.e("dpt","isChange = $isChange")

@@ -31,6 +31,7 @@ class UpgradeDialogActivity :Activity(){
         findViewById(R.id.btn_upgrade).setOnClickListener {
             val result = Intent()
             result.putExtra("UPGRADE_RESULT",true)
+            result.putExtra("URL",intent.getStringExtra("URL"))
             setResult(2,result)
             finish()
         }

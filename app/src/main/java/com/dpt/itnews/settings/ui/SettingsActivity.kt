@@ -10,16 +10,14 @@ import android.view.View
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import com.dpt.itnews.BuildConfig
 import com.dpt.itnews.R
 import com.dpt.itnews.base.util.DayNight
 import com.dpt.itnews.base.util.DayNightHelper
 import com.dpt.itnews.base.util.showDayNightAnimation
 import com.dpt.itnews.data.po.UpgradeInfo
-import com.dpt.itnews.list.ListContract
 import com.dpt.itnews.settings.SettingsContract
 import com.dpt.itnews.settings.presenter.SettingsPresenter
-import com.dpt.itnews.settings.upgrade.UpgradeHelper
+import com.dpt.itnews.settings.upgrade.UpgradeAppHelper
 
 /**
  * Created by dupengtao on 17/6/20.
@@ -29,11 +27,11 @@ class SettingsActivity : Activity(), SettingsContract.View {
     private lateinit var toolBar: Toolbar
     private lateinit var vUpdate: View
     private lateinit var dayNightHelper: DayNightHelper
-    private lateinit var upgradeHelper: UpgradeHelper
     private lateinit var sDayNight: Switch
     private var preDayNight: Boolean = false
 
     private lateinit var presenter: SettingsContract.Presenter
+    private var  upgradeHelper: UpgradeAppHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +60,6 @@ class SettingsActivity : Activity(), SettingsContract.View {
 
     private fun initItem() {
         vUpdate = findViewById(R.id.rl_settings_update)
-        upgradeHelper = UpgradeHelper()
         vUpdate.setOnClickListener {
             presenter.checkVersion()
         }
@@ -84,7 +81,7 @@ class SettingsActivity : Activity(), SettingsContract.View {
             refreshUI(!isChecked)
         }
 
-        (findViewById(R.id.tv_settings_update) as TextView).text = "版本更新 (${BuildConfig.VERSION_CODE})"
+//        (findViewById(R.id.tv_settings_update) as TextView).text = "版本更新 (${BuildConfig.VERSION_CODE})"
 
     }
 
@@ -148,6 +145,11 @@ class SettingsActivity : Activity(), SettingsContract.View {
         val result = data?.getBooleanExtra("UPGRADE_RESULT",false)
         if(result is Boolean && result){
             Toast.makeText(this,"后台正在下载,稍后会自动安装",Toast.LENGTH_SHORT).show()
+            if(upgradeHelper == null) {
+                upgradeHelper = UpgradeAppHelper()
+            }
+            upgradeHelper?.downloadApk(this,data.getStringExtra("URL"))
+
         }else{
             Toast.makeText(this,"期待您下次更新",Toast.LENGTH_SHORT).show()
         }
@@ -162,10 +164,17 @@ class SettingsActivity : Activity(), SettingsContract.View {
         val intent = Intent(this, UpgradeDialogActivity::class.java)
         intent.putExtra("VERSION",updateInfo.apkVersion)
         intent.putExtra("DESCRIPTION",updateInfo.description)
+        intent.putExtra("URL",updateInfo.fileUrl)
         startActivityForResult(intent,2)
     }
 
     override fun showMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.unSubscribe()
+        upgradeHelper?.unRegister(this)
     }
 }

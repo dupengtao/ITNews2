@@ -36,10 +36,10 @@ class SettingsPresenter (val view: SettingsContract.View,val newsRepository: New
                             return@subscribe
                         }
                     }
-                    view.showMsg("您的应用为最新版本")
+                    view.showMsg("您的应用为最新版本(版本号:${BuildConfig.VERSION_CODE})")
                 }, {
                     it.printStackTrace()
-                    view.showMsg("您的应用为最新版本")
+                    view.showMsg("您的应用为最新版本(版本号:${BuildConfig.VERSION_CODE}")
                 })
     }
 }
