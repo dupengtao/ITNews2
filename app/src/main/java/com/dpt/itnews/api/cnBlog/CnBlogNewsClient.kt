@@ -1,5 +1,7 @@
 package com.dpt.itnews.api.cnBlog
 
+import android.util.Log
+import com.dpt.itnews.BuildConfig
 import com.dpt.itnews.api.converter.QualifiedTypeConverterFactory
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -29,7 +31,7 @@ class CnBlogNewsClient {
     private fun initCnBlogNewsApi() {
         val okHttpClientBuilder = OkHttpClient.Builder()
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+        httpLoggingInterceptor.level = if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
         okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
 
         val retrofit = Retrofit.Builder()

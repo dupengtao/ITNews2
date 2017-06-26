@@ -14,7 +14,7 @@ object Analytics {
     fun getDefaultTracker(app: Application): Tracker? {
         if (tracker == null) {
             val analytics = GoogleAnalytics.getInstance(app)
-            tracker = analytics.newTracker(R.xml.app_tracker);
+            tracker = analytics.newTracker(R.xml.app_tracker)
         }
         return tracker
     }

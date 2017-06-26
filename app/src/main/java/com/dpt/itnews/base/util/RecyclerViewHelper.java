@@ -22,7 +22,7 @@ public class RecyclerViewHelper {
             declaredField.setAccessible(true);
             Method declaredMethod = Class.forName(RecyclerView.Recycler.class.getName()).getDeclaredMethod("clear", (Class<?>[]) new Class[0]);
             declaredMethod.setAccessible(true);
-            declaredMethod.invoke(declaredField.get(recyclerView), new Object[0]);
+            declaredMethod.invoke(declaredField.get(recyclerView));
             RecyclerView.RecycledViewPool recycledViewPool = recyclerView.getRecycledViewPool();
             recycledViewPool.clear();
         } catch (NoSuchFieldException e) {
