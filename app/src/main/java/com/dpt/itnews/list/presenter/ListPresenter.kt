@@ -27,6 +27,7 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     private var isLoadingNextPager = false
     private var curPageIndex = 1
     private var times = 0
+    private var loadNextPageError: Boolean =false
 
     init {
         view.setPresenter(this)
@@ -43,6 +44,8 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
     override fun loadNextPage(fistPos: Int, lastPos: Int, itemCount: Int) {
 
         if (itemCount == 0) return
+
+        if(loadNextPageError) return
 
         if (itemCount - lastPos > 8) return
 
@@ -64,6 +67,8 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
             curPageIndex += 1
         }, {
             it.printStackTrace()
+            view.showTopTips("似乎出现了问题...\n无法加载下一页数据了\n下拉刷新试试")
+            loadNextPageError = true
         })
         disposable.add(subscribe)
 
@@ -74,15 +79,21 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
         if (isFirst) {
             val subscribe = loadNews(size = 15)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doFinally { Log.e(ListPresenter::class.java.simpleName, "do Finally") }
-                    .subscribe { news: News ->
+                    .doFinally {
+                        view.showRefreshing(false)
+                    }
+                    .subscribe({ news: News ->
                         Log.e(ListPresenter::class.java.simpleName, "news list size = ${news.newsList.size}")
                         curNews = news
                         view.showNews(news)
                         view.showTopTips("首页已更新")
                         view.refreshProcess(0)
                         curPageIndex = 1
-                    }
+                        loadNextPageError = false
+                    }, {
+                        curPageIndex = 1
+                        view.showError()
+                    })
             disposable.addAll(subscribe)
         } else {
             val subscribe = loadNews().toObservable()
@@ -110,13 +121,16 @@ class ListPresenter(val view: ListContract.View, val newsRepository: NewsReposit
                             curNews
                         }
                     })
-                    .observeOn(AndroidSchedulers.mainThread()).doFinally {
-                view.showRefreshing(false)
-            }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally {
+                        view.showRefreshing(false)
+                    }
                     .subscribe({
                         view.refreshProcess(0)
                         view.showNews(it)
+                        loadNextPageError = false
                     }, {
+                        view.showTopTips("似乎出现了问题...\n无法加载最新数据了\n下拉刷新试试")
                         it.printStackTrace()
                     })
             disposable.add(subscribe)

@@ -13,21 +13,62 @@
             android:layout_height="match_parent"
             >
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_article"
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:requiresFadingEdge="none"
-                android:paddingTop="50dp"
-                android:clipToPadding="false"
-                android:scrollbars="vertical"
-                android:scrollbarSize="2dp"
-                android:scrollbarThumbVertical="@color/scrollbar"
-                android:scrollbarStyle="outsideOverlay"
-                android:overScrollMode="never"
-                />
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_article"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:requiresFadingEdge="none"
+                    android:paddingTop="50dp"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="2dp"
+                    android:scrollbarThumbVertical="@color/scrollbar"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:overScrollMode="never"
+                    />
+            <RelativeLayout
+                    android:id="@+id/rl_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    >
+                <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_cloud_error"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textColor="?attr/listTitleTextColor"
+                            android:text="@string/error_msg"
+                            android:layout_marginTop="10dp"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="?attr/listSummaryTextColor"
+                            android:textSize="16sp"
+                            android:lineSpacingExtra="6dp"
+                            android:text="@string/reload"
+                            />
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
@@ -36,6 +77,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/toolbarBackground"
             >
+
         <android.support.v7.widget.Toolbar
                 android:id="@+id/tb_list"
                 android:layout_width="match_parent"
@@ -52,6 +94,7 @@
             android:max="15"
             android:elevation="4dp"
             />
+
     <ImageView
             android:id="@+id/iv_layer"
             android:layout_width="match_parent"

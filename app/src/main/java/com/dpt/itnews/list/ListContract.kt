@@ -11,10 +11,11 @@ import com.dpt.itnews.data.vo.News
 interface ListContract {
     interface View : BaseView<Presenter> {
         fun showNews(news: News)
-        fun showTopTips(msg: String)
+        fun showTopTips(msg: String,type :Int = 1)
         fun showRefreshing(isShow: Boolean)
         fun openArticle(newId: Int, article: Article?)
         fun refreshProcess(times: Int)
+        fun showError()
     }
 
     interface Presenter : BasePresenter {

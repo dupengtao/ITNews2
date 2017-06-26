@@ -8,4 +8,6 @@
     <string name="about">关于</string>
     <string name="action_up">回到顶部</string>
 
+    <string name="error_msg">似乎出了点问题...</string>
+    <string name="reload">下拉刷新试试</string>
 </resources>

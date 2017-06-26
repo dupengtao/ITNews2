@@ -48,17 +48,18 @@ class NewsEntryActivity : Activity(), ListContract.View {
     private lateinit var articleView: ArticleView
     private lateinit var processBar: ProgressBar
     private lateinit var ivLayer: ImageView
+    private lateinit var errorView: View
     private lateinit var articleBehavior: CustomBottomSheetBehavior<ArticleView>
     private lateinit var dayNightHelper: DayNightHelper
-
+    private var hasError: Boolean = false
     private var preOffset = 0
     private var isLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list2)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        }else{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         }
@@ -68,11 +69,13 @@ class NewsEntryActivity : Activity(), ListContract.View {
         initArticleView()
         initProgressBar()
         initOtherView()
+        initErrorView()
         dayNightHelper = DayNightHelper(this)
         initTheme()
 
         ListPresenter(this)
     }
+
 
     private fun initTheme() {
         val isDay = if (dayNightHelper.isDay()) {
@@ -102,6 +105,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
         }
     }
 
+    private fun initErrorView() {
+        errorView = findViewById(R.id.rl_error)
+    }
+
     override fun onResume() {
         super.onResume()
         if (!isLoaded) {
@@ -120,8 +127,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
     }
 
     override fun showNews(news: News) {
+        errorView.visibility = View.GONE
         newsEntryAdapter.news = news
         newsEntryAdapter.notifyDataSetChanged()
+        hasError = false
     }
 
     private fun initRecyclerView() {
@@ -203,9 +212,9 @@ class NewsEntryActivity : Activity(), ListContract.View {
                     }
                     refreshUI(isDay)
                 }
-                R.id.action_settings ->{
+                R.id.action_settings -> {
                     val intent = Intent(this, SettingsActivity::class.java)
-                    startActivityForResult(intent,1)
+                    startActivityForResult(intent, 1)
                 }
             }
             true
@@ -240,12 +249,12 @@ class NewsEntryActivity : Activity(), ListContract.View {
         val settings = toolBar.menu.findItem(R.id.action_settings)
         refreshStatusBar(isDayMode)
         if (isDayMode) {
-            toolBar.overflowIcon= resources.getDrawable(R.drawable.ic_toolbar_menu)
+            toolBar.overflowIcon = resources.getDrawable(R.drawable.ic_toolbar_menu)
             up.icon = resources.getDrawable(R.drawable.ic_up_arrow_angle)
             settings.icon = resources.getDrawable(R.drawable.ic_settings)
             changeMode.isChecked = false
         } else {
-            toolBar.overflowIcon= resources.getDrawable(R.drawable.ic_toolbar_menu_night)
+            toolBar.overflowIcon = resources.getDrawable(R.drawable.ic_toolbar_menu_night)
             up.icon = resources.getDrawable(R.drawable.ic_up_arrow_angle_night)
             settings.icon = resources.getDrawable(R.drawable.ic_settings_night)
             changeMode.isChecked = true
@@ -271,7 +280,7 @@ class NewsEntryActivity : Activity(), ListContract.View {
         //progressBar
         if (isDayMode) {
             processBar.progressDrawable.setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY)
-        }else{
+        } else {
             processBar.progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         }
 
@@ -280,10 +289,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
     }
 
     private fun refreshStatusBar(dayMode: Boolean) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if(dayMode){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (dayMode) {
                 window.statusBarColor = resources.getColor(R.color.statusBarColor)
-            }else{
+            } else {
                 window.statusBarColor = resources.getColor(R.color.statusBarColor_Night)
             }
         }
@@ -293,11 +302,15 @@ class NewsEntryActivity : Activity(), ListContract.View {
         swipeRefreshLayout = findViewById(R.id.srl_list) as SwipeRefreshLayout
         swipeRefreshLayout.setProgressViewOffset(true, 150, 400)
         swipeRefreshLayout.setOnRefreshListener {
-            presenter.loadRecentList(false)
+            if (hasError) {
+                presenter.loadRecentList(true)
+            } else {
+                presenter.loadRecentList(false)
+            }
         }
     }
 
-    override fun showTopTips(msg: String) {
+    override fun showTopTips(msg: String, type: Int) {
         Toast.makeText(this, msg, LENGTH_SHORT).show()
     }
 
@@ -321,6 +334,11 @@ class NewsEntryActivity : Activity(), ListContract.View {
         }
     }
 
+    override fun showError() {
+        hasError = true
+        errorView.visibility = View.VISIBLE
+    }
+
     override fun onBackPressed() {
         if (articleBehavior.state != CustomBottomSheetBehavior.STATE_COLLAPSED) {
             articleBehavior.state = CustomBottomSheetBehavior.STATE_COLLAPSED
@@ -331,10 +349,10 @@ class NewsEntryActivity : Activity(), ListContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val isChange = data?.getBooleanExtra("IS_CHANGE",false)
-        if(isChange is Boolean && isChange){
+        val isChange = data?.getBooleanExtra("IS_CHANGE", false)
+        if (isChange is Boolean && isChange) {
             initTheme()
         }
-        Log.e("dpt","isChange = $isChange")
+        Log.e("dpt", "isChange = $isChange")
     }
 }
